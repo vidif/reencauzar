@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f6b6b">
+<title>REENCAUZAR</title>
+<style>
+:root{--bg:#eaf1f5;--card:#fff;--ink:#1b2a3a;--mut:#566574;--ac:#0f6b6b;--acx:#fff;--ln:#d5dce3;--warn:#c4521f;--c1:#0f8b8d;--c2:#e8a317;--c3:#e4572e;--c4:#4f46c8;--c5:#2e9e5b;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1720;--card:#18222c;--ink:#e6edf3;--mut:#9aa9b8;--ac:#3fb5ad;--acx:#07201f;--ln:#2a3846;--warn:#ff8a5c;--c1:#3fb5ad;--c2:#f0b94a;--c3:#ff7a59;--c4:#8b86ff;--c5:#52c98a;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0)}
+header{padding:16px;background:linear-gradient(135deg,#0b5560,#1d4f91 55%,#4f46c8);color:#fff}.hero{max-width:720px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:14px}.hero p{margin:6px 0;font:italic 15px/1.35 Georgia,serif}.hero small{color:#ffd166;font-weight:700}.ring{width:84px;height:84px;border-radius:50%;flex:none;display:grid;place-items:center;background:conic-gradient(#ffd166 calc(var(--p)*1%),rgba(255,255,255,.25) 0)}.ring span{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#0d4b63;font:700 18px Georgia,serif;color:#fff}
+header b{font:700 22px Georgia,serif;letter-spacing:1px}
+main{max-width:720px;margin:0 auto;padding:12px 12px 90px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;overflow-x:auto;background:var(--card);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0)}
+nav button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;border-radius:0;background:none;color:var(--mut);padding:8px 12px;font-size:12px;white-space:nowrap}nav i{font-style:normal;font-size:20px}
+nav button.on{color:var(--ac);font-weight:700;box-shadow:inset 0 3px 0 var(--ac)}
+h2{font:700 19px Georgia,serif;margin:20px 0 8px}
+.c{background:var(--card);border:1px solid var(--ln);border-left:5px solid var(--c1);border-radius:10px;padding:12px;margin:8px 0}.c:has(.done){border-left-color:var(--c5)}.c:has(.late){border-left-color:var(--c3)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row>*{flex:1 1 130px}
+.kpi{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.kpi div{--k:var(--c1);flex:1 1 130px;background:var(--card);border:1px solid var(--ln);border-top:4px solid var(--k);border-radius:10px;padding:10px}.kpi div:nth-child(5n+2){--k:var(--c2)}.kpi div:nth-child(5n+3){--k:var(--c3)}.kpi div:nth-child(5n+4){--k:var(--c4)}.kpi div:nth-child(5n+5){--k:var(--c5)}
+.kpi b{display:block;font:700 24px Georgia,serif;color:var(--k)}
+.kpi span,small,.m,.fl{color:var(--mut);font-size:13px}
+.fl{display:block}
+input,select,textarea,button{font:inherit;color:inherit}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);margin:3px 0}
+button{padding:9px 12px;border-radius:8px;border:1px solid var(--ln);background:var(--card)}
+button.pri{background:linear-gradient(135deg,var(--c1),var(--c4));color:#fff;border-color:transparent;font-weight:700;margin-top:6px}
+button.x{border:0;color:var(--warn);background:none;padding:4px 8px}
+details{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:10px 12px;margin:8px 0}
+summary{font-weight:700;cursor:pointer}
+progress{appearance:none;-webkit-appearance:none;width:100%;height:10px;border:0;border-radius:6px;overflow:hidden;background:var(--ln)}progress::-webkit-progress-bar{background:var(--ln)}progress::-webkit-progress-value{background:linear-gradient(90deg,var(--c1),var(--c5));border-radius:6px}progress::-moz-progress-bar{background:linear-gradient(90deg,var(--c1),var(--c5))}
+.done{text-decoration:line-through;color:var(--mut)}
+.late{color:var(--warn);font-weight:700}
+h2::before{content:"";display:inline-block;width:6px;height:18px;border-radius:3px;background:var(--c2);margin-right:8px;vertical-align:-2px}summary{color:var(--c4)}.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);max-width:90vw;text-align:center;background:linear-gradient(135deg,var(--c5),var(--c1));color:#fff;padding:12px 18px;border-radius:24px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:9;animation:pop .35s}@keyframes pop{from{transform:translateX(-50%) scale(.8);opacity:0}}@media(prefers-reduced-motion:reduce){.toast{animation:none}}:focus-visible{outline:3px solid var(--c4);outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const K='reencauzar_v1',TZ='America/Mazatlan',END='2026-11-12';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:TZ});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const money=n=>'$'+Math.round(n||0).toLocaleString('es-MX');
+const daysLeft=()=>Math.max(0,Math.round((new Date(END)-new Date(today()))/864e5));
+const addD=(d,n)=>{const t=new Date(d+'T12:00:00');t.setDate(t.getDate()+n);return t.toISOString().slice(0,10)};
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const opts=(a,v)=>a.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('');
+const tm=s=>{const p=s.split(':');return +p[0]*60+ +p[1]};
+const hrs=o=>o.acosto&&o.desperto?((tm(o.desperto)-tm(o.acosto)+1440)%1440)/60:null;
+const pct=o=>o.objetivo===o.inicial?0:Math.max(0,Math.min(100,Math.round((o.actual-o.inicial)/(o.objetivo-o.inicial)*100)));
+const AREAS=['Salud','Tizoc','Economía','Marca personal','Familia','Gimnasio Mental','Equipo','Lectura','Organización'];
+const PR=['alta','media','baja'],SAL=['Clásica','Fusilli','Pimientos','Lili'];
+const ES=['pendiente','en progreso','completada','reprogramada','cancelada'];
+const EV=['pendiente','realizada','evidencia preparada','evidencia enviada','evidencia aceptada','requiere corrección','fuera de plazo'];
+const GMS=['pendiente','programada','realizada','evidencia pendiente','evidencia preparada','evidencia enviada','evidencia aceptada','requiere corrección','fuera de plazo'];
+const CRM=['prospecto nuevo','contactado','respondió','interesado','pedido solicitado','pedido confirmado','pedido entregado','seguimiento posventa','cliente recurrente','no interesado'];
+const VET=['idea','guion','preparación','grabación','edición','publicado'];
+const HOR=[['06:00','08:00','Llamadas y seguimiento del equipo'],['08:00','09:00','Desayuno y recuperación'],['09:00','09:45','Planificación y preparación de Tizoc'],['10:00','11:00','Prospección y pedidos'],['11:00','19:00','Operación Tizoc y entregas'],['19:00','19:40','Caminata o entrenamiento en casa'],['19:40','20:20','Cena y convivencia'],['20:20','21:00','Marca personal, Gimnasio Mental o evidencias'],['21:00','21:20','Lectura y plan del día siguiente'],['21:20','22:00','Desconexión y preparación para dormir']];
+const INI=['¿Cómo dormí?','¿Cómo está mi energía (1 a 10)?','¿Cuál es mi prioridad económica?','¿Qué compromiso personal debo cumplir?','¿Qué actividad es imprescindible hoy?'];
+const CIE=['¿Qué hice?','¿Qué resultado obtuve?','¿Qué evidencia guardé?','¿Qué obstáculo tuve?','¿Cuál será mi siguiente acción?'];
+const mk=(nombre,area,obj,unidad,ini=0,fecha=END)=>({nombre,area,inicial:ini,actual:ini,objetivo:obj,unidad,fecha,proxima:''});
+const SEED={
+metas:[mk('Contactos comerciales nuevos (5 por día de operación)','Tizoc',60,'contactos'),mk('Generar $7,000 adicionales','Economía',7000,'MXN'),mk('Sesiones de actividad física','Salud',8,'sesiones'),mk('Sesiones suaves de fuerza en casa','Salud',2,'sesiones'),mk('Videos publicados','Marca personal',3,'videos'),mk('Conversaciones significativas','Familia',2,'conversaciones'),mk('Comida o actividad compartida','Familia',1,'actividad'),mk('Seguimiento individual al equipo','Equipo',5,'personas'),mk('Sesiones de lectura (10 páginas)','Lectura',8,'sesiones'),mk('Revisar análisis clínicos con profesional','Salud',1,'cita'),mk('Peso (largo plazo, no es meta del 12 nov)','Salud',79,'kg',86.6,'')],
+gm:[['Realizar ejercicio físico cuatro veces',1],['Medir composición corporal',1],['Contactar cinco personas importantes con quienes no he hablado desde hace tiempo',1],['Escribir una carta de amor',1],['Enviar flores a mamá',1],['Realizar cine en familia',1],['Retirar diez objetos que me vinculan al pasado',1],['Ofrecer chocolate caliente a una persona que lo necesite',1],['Colocar diez mensajes positivos',1],['Preparar comida para un amigo o colega',1],['Acumular cuatro horas de ejercicio',2],['Tomar dos litros de agua por cuatro días',2],['Pasar dos días sin azúcar añadida',2]].map(a=>({actividad:a[0],semana:String(a[1]),fecha:'',nota:''})),
+videos:[['Estoy volviendo a empezar','2026-11-03'],['La disciplina comienza con una decisión','2026-11-06'],['Lo que estoy aprendiendo al reconstruir mis hábitos','2026-11-10']].map(a=>({titulo:a[0],fecha:a[1],plataforma:'',enlace:'',notas:''}))};
+
+const lp=()=>D.logros.length?Math.round(D.logros.filter(o=>o.estado==='completada').length/D.logros.length*100):0;
+const LM=[{id:'Meta 1',t:'Soy un hombre saludable y peso 79 kg',p:'Energía, vitalidad, longevidad, inspiración y congruencia en salud',s:'Disciplinado, comprometido, irrazonable, consciente'},{id:'Meta 2',t:'Tengo una marca personal activa en redes sociales y economía',p:'Compromiso, relaciones y conexión con la comunidad',s:'Disciplinado, comprometido, valiente, extrovertido, seguro, congruente'}];
+const LG=(meta,mecanismo,fecha)=>({meta,mecanismo,fecha:fecha||''});
+SEED.logros=[LG('Meta 1','Inscripción al gym y contratar rutinas','2026-09-15'),LG('Meta 1','Diseñar el calendario alimenticio mensual','2026-09-15'),LG('Meta 1','Análisis de química sanguínea','2026-10-01'),LG('Meta 1','Ejercitarme (gym, casa, caminata) 5 veces por semana','2026-09-15'),LG('Meta 1','Diagnóstico y atención dental','2026-10-30'),LG('Meta 1','Diseñar rutina en casa'),LG('Meta 1','Cuidar alimentación'),LG('Meta 1','Cuidar líquidos'),LG('Meta 1','Recuperación'),LG('Meta 1','Sueño'),LG('Meta 2','Definir el tipo de mensaje a difundir','2026-09-16'),LG('Meta 2','Crear el calendario de publicaciones','2026-09-18'),LG('Meta 2','Comprar micrófonos inalámbricos y lámpara','2026-09-21'),LG('Meta 2','Crear entrevistas de valor (2 a 3: septiembre, octubre y noviembre)'),LG('Meta 2','Tomar curso de redes sociales y marca personal'),LG('Meta 2','Comenzar a hacer videos para mi serie de contenidos de marca personal'),LG('Meta 2','Realizar publicaciones de contenido')];
+const M={
+logros:{t:'Carta de logros',f:[['mecanismo','Mecanismo','t'],['meta','Meta','s',['Meta 1','Meta 2']],['fecha','Fecha compromiso','d','']],st:['pendiente','en progreso','completada'],o:(a,b)=>a.meta.localeCompare(b.meta)||(a.fecha||'9').localeCompare(b.fecha||'9'),
+ x:a=>LM.map(g=>{const l=a.filter(o=>o.meta===g.id),d=l.filter(o=>o.estado==='completada').length,p=l.length?Math.round(d/l.length*100):0;return `<div class="c"><b>${g.id}: ${g.t}</b><br><small>Para qué: ${g.p}</small><br><small>Maneras de ser: ${g.s}</small><br><small>Para cuándo: 12 de noviembre de 2026</small><progress max="100" value="${p}"></progress><small>${d} de ${l.length} mecanismos · ${p}%${l.length&&d===l.length?' · <b>Meta concretada</b>':''}</small></div>`}).join('')+`<button onclick="seed('logros')">Cargar mecanismos de mi carta</button><p class="m">Lo vencido y pendiente se marca en naranja. Revisa la compra de micrófonos y lámpara: tu plan pide no depender de comprar equipo.</p>`,
+ r:o=>o.fecha&&o.fecha<today()&&o.estado!=='completada'?'<small class="late">Vencido: aún pendiente</small>':''},
+events:{t:'Agenda',f:[['titulo','Actividad','t'],['fecha','Fecha','d'],['inicio','Inicio','h'],['fin','Fin','h'],['prioridad','Prioridad','s',PR]],st:ES,
+ x:()=>`<button onclick="loadHor()">Cargar horario objetivo en hoy</button>`,
+ L(a){const d=today();let last='';return a.filter(e=>e.fecha>=d||['pendiente','en progreso'].includes(e.estado)).sort((x,y)=>(x.fecha+x.inicio).localeCompare(y.fecha+y.inicio)).map(e=>{const h=e.fecha!==last?`<h3 class="m">${esc(e.fecha)}${e.fecha<d?' <span class="late">vencida</span>':''}</h3>`:'';last=e.fecha;
+ return h+`<div class="c"><div class="row"><span><b>${esc(e.inicio)}–${esc(e.fin)}</b> <span class="${e.estado==='completada'?'done':''}">${esc(e.titulo)}</span> <small>(${esc(e.prioridad)})</small></span><button class="x" style="flex:0" onclick="del('events','${e.id}')">Eliminar</button></div><div class="row"><select onchange="upd('events','${e.id}','estado',this.value)">${opts(ES,e.estado)}</select><input type="date" value="${esc(e.fecha)}" aria-label="Reprogramar" onchange="upd('events','${e.id}','fecha',this.value)"></div>${e.orig?`<small>Fecha original: ${esc(e.orig)}</small>`:''}</div>`}).join('')||'<p class="m">Sin actividades próximas.</p>'}},
+metas:{t:'Metas SMART',f:[['nombre','Meta','t'],['area','Área','s',AREAS],['inicial','Valor inicial','n',0],['actual','Valor actual','n',0],['objetivo','Valor objetivo','n'],['unidad','Unidad','t'],['fecha','Fecha límite','d',END],['proxima','Próxima acción','t']],st:['en curso','lograda','ajustada','no lograda'],
+ x:a=>`<div class="kpi"><div><b>${a.length?Math.round(sum(a,pct)/a.length):0}%</b><span>avance promedio</span></div><div><b>${a.filter(o=>o.estado==='lograda').length}/${a.length}</b><span>logradas</span></div></div><button onclick="seed('metas')">Cargar metas iniciales del ciclo</button>`,
+ r:o=>`<progress max="100" value="${pct(o)}"></progress><div class="row"><small>${pct(o)}% de ${esc(o.objetivo)} ${esc(o.unidad)}</small><input type="number" step="any" value="${o.actual}" aria-label="Avance actual" onchange="upd('metas','${o.id}','actual',this.value)"></div>`},
+tasks:{t:'Tareas',f:[['titulo','Tarea','t'],['area','Área','s',AREAS],['prioridad','Prioridad','s',PR],['fecha','Fecha límite','d','']],st:['pendiente','en progreso','completada'],o:(a,b)=>(a.estado==='completada')-(b.estado==='completada')||(a.fecha||'9').localeCompare(b.fecha||'9')},
+gm:{t:'Gimnasio Mental',f:[['actividad','Actividad','t'],['semana','Semana','s',['1','2','3','4']],['fecha','Fecha límite','d',''],['nota','Instrucciones o notas','a']],st:GMS,
+ x:a=>{const r=a.filter(o=>GMS.indexOf(o.estado)>=2&&GMS.indexOf(o.estado)<=6).length;return `<div class="kpi"><div><b>${r}/${a.length}</b><span>realizadas</span></div><div><b>${a.filter(o=>o.estado==='evidencia enviada').length}</b><span>evidencia enviada</span></div><div><b>${a.filter(o=>o.estado==='evidencia aceptada').length}</b><span>aceptadas</span></div></div><button onclick="seed('gm')">Cargar actividades conocidas (semanas 1 y 2)</button><p class="m">La semana 2 quedó incompleta en tu documento. Agrega las demás a mano.</p>`}},
+evid:{t:'Evidencias',f:[['actividad','Actividad','t'],['fecha','Fecha','d'],['nota','Nota o enlace','a']],st:EV,rev:1},
+sales:{t:'Ventas Tizoc',f:[['cliente','Cliente','t'],['fecha','Fecha','d'],['ensalada','Ensalada','s',SAL],['cant','Cantidad','n',1],['precio','Precio unitario','n',150],['costo','Costo total del pedido (opcional)','n',0],['entrega','Entrega','s',['Envío','Recoge']]],st:['Pendiente','Pagado'],sf:'pago',rev:1,
+ x:a=>{const d=today(),h=a.filter(s=>s.fecha===d),t=s=>s.cant*s.precio,cc=a.filter(s=>s.costo>0);return `<div class="kpi"><div><b>${money(sum(h,t))}</b><span>hoy · ${sum(h,s=>s.cant)} ensaladas</span></div><div><b>${money(sum(a,t))}</b><span>periodo · ${sum(a,s=>s.cant)} ensaladas</span></div><div><b>${a.length?money(sum(a,t)/a.length):'$0'}</b><span>ticket promedio</span></div><div><b>${money(sum(cc,s=>t(s)-s.costo))}</b><span>margen (solo pedidos con costo)</span></div></div><p class="m">Las ventas brutas no son ganancia.</p>`},
+ r:o=>`<small>Total ${money(o.cant*o.precio)}</small>`},
+clientes:{t:'CRM de prospectos y clientes',f:[['nombre','Nombre','t'],['whatsapp','WhatsApp','t'],['zona','Colonia o zona','t'],['origen','Origen','s',['WhatsApp','Recomendación','Redes','Otro']],['producto','Producto preferido','s',SAL],['seg','Siguiente seguimiento','d',''],['notas','Notas','a']],st:CRM,sf:'etapa',rev:1,
+ x:a=>`<div class="kpi"><div><b>${a.filter(c=>c.creado===today()).length}/5</b><span>contactos nuevos hoy</span></div><div><b>${a.filter(c=>c.seg&&c.seg<=today()&&c.etapa!=='no interesado').length}</b><span>seguimientos para hoy o vencidos</span></div></div>`},
+deudas:{t:'Compromisos de pago',f:[['concepto','Concepto','t'],['vence','Vence','d',''],['importe','Importe','n'],['pagado','Pagado acumulado','n',0],['prioridad','Prioridad','s',PR]],st:['pendiente','pagado','negociado'],
+ o:(a,b)=>(a.vence||'9').localeCompare(b.vence||'9'),
+ x:a=>{const d=today(),act=a.filter(o=>o.estado!=='pagado'),pend=sum(act,o=>Math.max(0,o.importe-o.pagado)),libre=D.caja-D.reserva,br=Math.max(0,pend-libre),soon=act.filter(o=>o.vence&&o.vence<=addD(d,3)).length;
+ return `<div class="row"><label class="fl">Efectivo en caja<input type="number" value="${D.caja}" onchange="cfg('caja',this.value)"></label><label class="fl">Reservado para reposición<input type="number" value="${D.reserva}" onchange="cfg('reserva',this.value)"></label></div><div class="kpi"><div><b>${money(libre)}</b><span>dinero libre</span></div><div><b>${money(pend)}</b><span>compromisos pendientes</span></div><div><b>${money(br)}</b><span>brecha por generar</span></div></div>${soon?`<p class="late">${soon} compromiso(s) vencen en 3 días o ya vencieron.</p>`:''}${libre<pend?'<p class="late">El dinero libre no cubre lo pendiente. No uses el capital de reposición.</p>':''}<p class="m">Las proyecciones de ventas no son dinero garantizado.</p>`},
+ r:o=>`<div class="row"><small>Saldo: ${money(Math.max(0,o.importe-o.pagado))}</small><input type="number" step="any" placeholder="Pagado acumulado" onchange="upd('deudas','${o.id}','pagado',this.value)"></div>`},
+salud:{t:'Salud y hábitos',f:[['fecha','Fecha','d'],['acosto','Hora de acostarse','h'],['desperto','Hora de despertar','h'],['energia','Energía (1 a 10)','n'],['actividad','Actividad','s',['ninguna','caminata','fuerza en casa','otra']],['minutos','Minutos','n'],['agua','Agua (litros)','n'],['peso','Peso kg (opcional)','n'],['notas','Alimentación, ánimo y notas','a']],rev:1,
+ x:a=>{const hs=a.map(hrs).filter(h=>h!=null),l=a.slice().reverse().find(o=>hrs(o)!=null);return `<div class="kpi"><div><b>${a.filter(o=>o.actividad&&o.actividad!=='ninguna').length}</b><span>sesiones de actividad</span></div><div><b>${hs.length?(sum(hs,h=>h)/hs.length).toFixed(1):'–'} h</b><span>sueño promedio</span></div></div>${l&&hrs(l)<5?'<p class="late">Tu último sueño fue menor a 5 h. Hoy prioriza descanso y actividad suave.</p>':''}<p class="m">Pendiente: revisar tus análisis clínicos y consultar el insomnio con un profesional de salud. Esta app no interpreta resultados.</p>`},
+ r:o=>hrs(o)!=null?`<small>Sueño: ${hrs(o).toFixed(1)} h</small>`:''},
+videos:{t:'Marca personal: videos',f:[['titulo','Video','t'],['fecha','Fecha plan','d'],['plataforma','Plataforma','s',['','Instagram','TikTok','Facebook','YouTube','WhatsApp','Otra']],['enlace','Enlace publicado','t'],['notas','Visualizaciones, comentarios, aprendizaje','a']],st:VET,sf:'etapa',o:(a,b)=>a.fecha.localeCompare(b.fecha),
+ x:a=>`<div class="kpi"><div><b>${a.filter(v=>v.etapa==='publicado').length}/3</b><span>publicados</span></div></div><button onclick="seed('videos')">Cargar los 3 videos del plan</button><p class="m">Registra solo métricas reales que veas en la plataforma.</p>`},
+fam:{t:'Familia y relaciones',f:[['persona','Persona','t'],['tipo','Tipo','s',['conversación significativa','comida o actividad compartida','otro']],['fecha','Fecha','d'],['reflexion','Reflexión privada','a'],['proximo','Próximo acercamiento','t']],rev:1,
+ x:a=>`<div class="kpi"><div><b>${a.filter(o=>o.tipo==='conversación significativa').length}/2</b><span>conversaciones</span></div><div><b>${a.filter(o=>o.tipo==='comida o actividad compartida').length}/1</b><span>comida o actividad</span></div></div>`},
+equipo:{t:'Mi equipo',f:[['persona','Integrante','t'],['fecha','Fecha','d'],['avance','Avance y actividades revisadas','a'],['obstaculo','Obstáculo','t'],['compromiso','Próximo compromiso','t']],st:['pendiente','cumplido'],rev:1,
+ x:a=>`<div class="kpi"><div><b>${new Set(a.map(o=>o.persona.trim().toLowerCase())).size}/5</b><span>integrantes con seguimiento</span></div></div>`},
+lectura:{t:'Lectura',f:[['libro','Libro','t'],['fecha','Fecha','d'],['paginas','Páginas','n',10],['nota','Aprendizaje','a']],rev:1,
+ x:a=>`<div class="kpi"><div><b>${a.length}/8</b><span>sesiones</span></div><div><b>${sum(a,o=>o.paginas)}</b><span>páginas</span></div></div>`}};
+
+const TABS=[['dia','☀️ Mi día'],['agenda','📅 Agenda',['events']],['logros','🏆 Carta de logros',['logros']],['metas','🎯 Metas',['metas','tasks']],['gm','🧠 Gimnasio',['gm','evid']],['tizoc','🥗 Tizoc',['sales','clientes']],['dinero','💰 Dinero',['deudas']],['salud','💪 Salud',['salud']],['marca','🎬 Marca',['videos']],['vida','❤️ Vida',['fam','equipo','lectura']],['informe','📊 Informe'],['resp','💾 Respaldo']];
+let D,tab='dia';
+function load(){try{D=JSON.parse(localStorage.getItem(K))}catch(e){D=null}if(!D)D={};migrate()}
+function migrate(){delete D.pin;Object.keys(M).concat(['evid']).forEach(k=>D[k]=D[k]||[]);D.days=D.days||{};if(D.caja===undefined)D.caja=3000;if(D.reserva===undefined)D.reserva=0;D.v=2}
+function save(){try{localStorage.setItem(K,JSON.stringify(D))}catch(e){alert('No se pudo guardar. Descarga un respaldo en la pestaña Respaldo.')}}
+function go(t){tab=t;render()}
+function cfg(k,v){D[k]=+v||0;save();render()}
+function add(e,id){e.preventDefault();const m=M[id],o=Object.fromEntries(new FormData(e.target));m.f.forEach(f=>{if(f[2]==='n')o[f[0]]=+o[f[0]]||0});o.id=uid();o.creado=today();if(m.st)o[m.sf||'estado']=m.st[0];D[id].push(o);save();render();return false}
+function upd(id,i,f,v){const o=D[id].find(x=>x.id===i);if(!o)return;if(typeof o[f]==='number')v=+v||0;if(id==='events'&&f==='fecha'){o.orig=o.orig||o.fecha;o.estado='reprogramada'}o[f]=v;save();render();if(CEL.includes(v))toast(ALEGRIA[Math.floor(Math.random()*ALEGRIA.length)])}
+function del(id,i){if(confirm('¿Eliminar este registro?')){D[id]=D[id].filter(x=>x.id!==i);save();render()}}
+function seed(id){const m=M[id],n=m.f[0][0];SEED[id].forEach(s=>{if(!D[id].some(o=>o[n]===s[n]))D[id].push(Object.assign({},s,{id:uid(),creado:today(),[m.sf||'estado']:m.st[0]}))});save();render()}
+function loadHor(){const d=today();HOR.forEach(h=>{if(!D.events.some(e=>e.fecha===d&&e.inicio===h[0]&&e.titulo===h[2]))D.events.push({id:uid(),fecha:d,inicio:h[0],fin:h[1],titulo:h[2],prioridad:'media',estado:'pendiente',creado:d})});save();render()}
+function saveDay(e,w){e.preventDefault();const d=today();D.days[d]=D.days[d]||{};D.days[d][w]=Object.fromEntries(new FormData(e.target));save();render();return false}
+
+function row(id,m,o){const sf=m.sf||'estado',n=m.f[0][0];
+ const sm=m.f.slice(1).filter(f=>f[2]!=='a'&&o[f[0]]!==''&&o[f[0]]!=null&&o[f[0]]!==0).map(f=>`${f[1]}: ${esc(o[f[0]])}`).join(' · ');
+ const nt=m.f.filter(f=>f[2]==='a'&&o[f[0]]).map(f=>`<p class="m">${esc(o[f[0]])}</p>`).join('');
+ return `<div class="c"><div class="row"><span><b class="${['completada','lograda'].includes(o[sf])?'done':''}">${esc(o[n])}</b><br><small>${sm}</small></span><button class="x" style="flex:0" onclick="del('${id}','${o.id}')">Eliminar</button></div>${nt}${m.st?`<select onchange="upd('${id}','${o.id}','${sf}',this.value)">${opts(m.st,o[sf])}</select>`:''}${m.r?m.r(o):''}</div>`}
+function sect(id){const m=M[id],a=D[id];
+ const inp=f=>{const n=f[0],t=f[2],x=f[3],v=t==='d'?(x===undefined?today():x):(x===undefined?'':x);
+  return `<label class="fl">${f[1]}${t==='s'?`<select name="${n}">${opts(x)}</select>`:t==='a'?`<textarea name="${n}" rows="2"></textarea>`:`<input name="${n}" type="${{t:'text',n:'number',d:'date',h:'time'}[t]}" value="${esc(v)}" ${t==='n'?'step="any"':''}>`}</label>`};
+ const l=m.L?m.L(a):(m.rev?a.slice().reverse():m.o?a.slice().sort(m.o):a).map(o=>row(id,m,o)).join('')||'<p class="m">Aún no hay registros.</p>';
+ return `<h2>${m.t}</h2>${m.x?m.x(a):''}<details><summary>Agregar</summary><form onsubmit="return add(event,'${id}')"><div class="row">${m.f.map(inp).join('')}</div><button class="pri">Guardar</button></form></details>${l}`}
+
+function dia(){const d=today(),dd=D.days[d]||{},ini=dd.ini||{},cie=dd.cierre||{};
+ const ts=D.tasks.filter(t=>t.estado!=='completada'&&(!t.fecha||t.fecha<=d)),ev=D.events.filter(e=>e.fecha===d).sort((a,b)=>a.inicio.localeCompare(b.inicio)),vs=D.sales.filter(s=>s.fecha===d);
+ const pe=D.gm.filter(g=>['evidencia pendiente','evidencia preparada'].includes(g.estado)).length+D.evid.filter(x=>['realizada','evidencia preparada'].includes(x.estado)).length;
+ const q=(arr,v,p)=>arr.map((t,i)=>`<label class="fl">${t}<textarea name="${p}${i}" rows="2">${esc(v[p+i])}</textarea></label>`).join('');
+ const pr=[0,1,2].map(i=>ini['p'+i]).filter(Boolean);
+ return `<p class="m">${new Date().toLocaleDateString('es-MX',{timeZone:TZ,weekday:'long',day:'numeric',month:'long'})}</p>
+ <div class="kpi"><div><b>${daysLeft()}</b><span>días al 12 de noviembre</span></div><div><b>${money(sum(vs,s=>s.cant*s.precio))}</b><span>ventas de hoy (brutas)</span></div><div><b>${D.clientes.filter(c=>c.creado===d).length}/5</b><span>contactos nuevos hoy</span></div><div><b>${pe}</b><span>evidencias por enviar</span></div><div><b>${lp()}%</b><span>Carta de logros</span></div></div>
+ ${pr.length?`<h2>Mis 3 prioridades</h2><ol>${pr.map(p=>`<li>${esc(p)}</li>`).join('')}</ol>`:''}
+ <details ${dd.ini?'':'open'}><summary>Comenzar mi día ${dd.ini?'(guardado)':''}</summary><form onsubmit="return saveDay(event,'ini')"><label class="fl">Tres prioridades de hoy<input name="p0" value="${esc(ini.p0)}"><input name="p1" value="${esc(ini.p1)}"><input name="p2" value="${esc(ini.p2)}"></label>${q(INI,ini,'q')}<button class="pri">Guardar inicio</button></form></details>
+ <h2>Agenda de hoy</h2>${ev.length?ev.map(e=>`<div class="c row"><span><b>${esc(e.inicio)}–${esc(e.fin)}</b> <span class="${e.estado==='completada'?'done':''}">${esc(e.titulo)}</span></span><select onchange="upd('events','${e.id}','estado',this.value)">${opts(ES,e.estado)}</select></div>`).join(''):'<p class="m">No hay actividades hoy. Cárgalas en Agenda.</p>'}
+ <h2>Tareas pendientes</h2>${ts.length?ts.map(t=>`<div class="c"><label><input type="checkbox" style="width:auto" onchange="upd('tasks','${t.id}','estado','completada')"> ${esc(t.titulo)} <small>${esc(t.area)}${t.fecha&&t.fecha<d?' · <span class="late">vencida</span>':''}</small></label></div>`).join(''):'<p class="m">Sin tareas pendientes para hoy.</p>'}
+ <details ${dd.cierre?'':''}><summary>Cerrar mi día ${dd.cierre?'(guardado)':''}</summary><form onsubmit="return saveDay(event,'cierre')">${q(CIE,cie,'c')}<button class="pri">Guardar cierre</button></form></details>`}
+
+function informe(){const g=D.gm,gr=g.filter(o=>GMS.indexOf(o.estado)>=2&&GMS.indexOf(o.estado)<=6).length,tv=sum(D.sales,s=>s.cant*s.precio);
+ return `<h2>Informe al ${today()}</h2><div class="kpi"><div><b>${daysLeft()}</b><span>días al 12 de noviembre</span></div><div><b>${D.metas.length?Math.round(sum(D.metas,pct)/D.metas.length):0}%</b><span>avance de metas</span></div><div><b>${D.tasks.filter(t=>t.estado==='completada').length}/${D.tasks.length}</b><span>tareas completadas</span></div><div><b>${lp()}%</b><span>Carta de logros</span></div><div><b>${gr}/${g.length}</b><span>Gimnasio Mental realizadas</span></div><div><b>${g.filter(o=>o.estado==='evidencia aceptada').length}</b><span>evidencias aceptadas</span></div><div><b>${money(tv)}</b><span>ventas brutas · ${sum(D.sales,s=>s.cant)} ensaladas</span></div><div><b>${Object.values(D.days).filter(x=>x.ini).length}/${Object.values(D.days).filter(x=>x.cierre).length}</b><span>días con inicio / cierre</span></div></div>
+ <h2>Metas</h2>${D.metas.map(o=>`<div class="c"><b>${esc(o.nombre)}</b><progress max="100" value="${pct(o)}"></progress><small>${pct(o)}% · ${esc(o.estado)}</small></div>`).join('')||'<p class="m">Carga tus metas en la pestaña Metas.</p>'}
+ <h2>Evaluación del 12 de noviembre</h2><textarea rows="6" placeholder="¿Qué logré? ¿Qué aprendí? ¿Qué voy a ajustar en el siguiente ciclo?" onchange="D.eval=this.value;save()">${esc(D.eval)}</textarea>`}
+
+function resp(){return `<h2>Respaldo</h2><p class="m">Tus datos viven solo en este navegador y dispositivo. Descarga un respaldo seguido, sobre todo antes de limpiar el navegador.</p><button class="pri" onclick="exp()">Descargar respaldo</button><h2>Restaurar</h2><input type="file" accept=".json,application/json" onchange="imp(this.files[0])"><p class="m">Restaurar reemplaza los datos actuales por los del archivo.</p>`}
+function exp(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,1)],{type:'application/json'}));a.download='reencauzar-respaldo-'+today()+'.json';a.click()}
+function imp(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!Array.isArray(o.tasks)||!o.days)throw 0;if(!confirm('¿Reemplazar los datos actuales?'))return;D=o;migrate();save();render()}catch(e){alert('El archivo no es un respaldo válido de REENCAUZAR.')}};r.readAsText(f)}
+
+const FRASES=['Transforma tu mente. Transforma tu vida. Construye tu futuro.','Hoy hago lo que realmente me acerca a la vida que quiero construir.','Soy un hombre saludable y peso 79 kg.','Tengo una marca personal activa en redes sociales y economía.'];
+const CEL=['completada','lograda','evidencia aceptada','publicado','Pagado','pagado','cumplido'];
+const ALEGRIA=['¡Bien hecho, César! Un paso más hacia tu meta.','¡Eso es disciplina! Sigue así.','¡Cumplido! Así se construye tu futuro.','¡Otro logro! Estás en tu plataforma y vas por tus metas.'];
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2600)}
+function ov(){const v=[];if(D.metas.length)v.push(sum(D.metas,pct)/D.metas.length);if(D.logros.length)v.push(lp());if(D.gm.length)v.push(D.gm.filter(o=>GMS.indexOf(o.estado)>=2&&GMS.indexOf(o.estado)<=6).length/D.gm.length*100);return v.length?Math.round(sum(v,x=>x)/v.length):0}
+function render(){const t=TABS.find(x=>x[0]===tab);
+ const b=tab==='dia'?dia():tab==='informe'?informe():tab==='resp'?resp():t[2].map(sect).join('');
+ $('#app').innerHTML=`<header><div class="hero"><div><b>REENCAUZAR</b><p>${FRASES[new Date(today()+'T12:00:00').getDate()%FRASES.length]}</p><small>${daysLeft()} días para el 12 de noviembre</small></div><div class="ring" style="--p:${ov()}" title="Avance general"><span>${ov()}%</span></div></div></header><main>${b}</main><nav>${TABS.map(x=>`<button class="${x[0]===tab?'on':''}" onclick="go('${x[0]}')"><i>${x[1].split(' ')[0]}</i>${x[1].slice(x[1].indexOf(' ')+1)}</button>`).join('')}</nav>`}
+load();render();
+</script>
+</body>
+</html>
